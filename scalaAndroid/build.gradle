@@ -35,6 +35,11 @@ android {
                 srcDir "src/main/scala" // default: "src/main/scala"
             }
         }
+        test {
+            scala {
+                srcDirs = ['src/test/scala']
+            }
+        }
 
     }
 
