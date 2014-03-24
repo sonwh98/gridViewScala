@@ -1,20 +1,24 @@
 {"Sandwiches": [
     {
-        "price": "5.00",
-        "name": "House Special"
+        "price": 5.00,
+        "name": "House Special",
+        "imageURL": "http://2.bp.blogspot.com/-YBjJBEkm6PA/Tc2YoacJvbI/AAAAAAAAABI/Ybd6kx1VmqE/s1600/Bahn%2BMi%2BFinal%2B5%2B11.jpg"
     },
     {
-        "price": "5.50",
-        "name": "BBQ Pork"
+        "price": 5.50,
+        "name": "BBQ Pork",
+        "imageURL": "http://2.bp.blogspot.com/-YBjJBEkm6PA/Tc2YoacJvbI/AAAAAAAAABI/Ybd6kx1VmqE/s1600/Bahn%2BMi%2BFinal%2B5%2B11.jpg"
     }
 ], "Drinks": [
     {
-        "price": "2.00",
-        "name": "coke"
+        "price": 2.00,
+        "name": "coke",
+        "imageURL": "http://2.bp.blogspot.com/-YBjJBEkm6PA/Tc2YoacJvbI/AAAAAAAAABI/Ybd6kx1VmqE/s1600/Bahn%2BMi%2BFinal%2B5%2B11.jpg"
     },
     {
-        "price": "2.50",
-        "name": "sprite"
+        "price": 2.50,
+        "name": "sprite",
+        "imageURL": "http://2.bp.blogspot.com/-YBjJBEkm6PA/Tc2YoacJvbI/AAAAAAAAABI/Ybd6kx1VmqE/s1600/Bahn%2BMi%2BFinal%2B5%2B11.jpg"
     }
 ],
     "Entrees": [
