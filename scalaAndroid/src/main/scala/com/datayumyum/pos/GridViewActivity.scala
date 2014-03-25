@@ -22,10 +22,21 @@ class GridViewActivity extends Activity {
   }
 
   implicit class GridAdapter(items: List[Item]) extends BaseAdapter {
-    var itemButtonList: List[View] = List()
+    val itemButtonList: List[View] = items.map((item: Item) => {
+      val inflater: LayoutInflater = LayoutInflater.from(GridViewActivity.this)
+      val itemButton: View = inflater.inflate(R.layout.item_button, null)
+      val imageButton: ImageButton = itemButton.findViewById(R.id.item_image_button).asInstanceOf[ImageButton]
+      new DownloadImageTask(imageButton).execute(item.imageURL)
+      imageButton.setOnClickListener((v: View) => {
+        Log.i(TAG, item.name)
+      })
+      val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
+      itemLabel.setText(item.name)
+      itemButton
+    })
 
     override def getCount: Int = {
-      return items.size
+      return itemButtonList.size
     }
 
     override def getItem(position: Int): Object = {
@@ -37,21 +48,6 @@ class GridViewActivity extends Activity {
     }
 
     override def getView(position: Int, convertView: View, parent: ViewGroup): View = {
-      if (itemButtonList.size == 0) {
-        val inflater: LayoutInflater = LayoutInflater.from(GridViewActivity.this)
-        itemButtonList = items.map((item: Item) => {
-          val itemButton: View = inflater.inflate(R.layout.item_button, null)
-          val imageButton: ImageButton = itemButton.findViewById(R.id.item_image_button).asInstanceOf[ImageButton]
-          new DownloadImageTask(imageButton).execute(item.imageURL)
-          imageButton.setOnClickListener((v: View) => {
-            Log.i(TAG, item.name)
-          })
-          val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
-          itemLabel.setText(item.name)
-          itemButton
-        })
-      }
-
       val imageView: View = itemButtonList(position)
       return imageView
     }
