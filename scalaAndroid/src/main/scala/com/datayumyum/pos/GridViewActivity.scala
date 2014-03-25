@@ -5,6 +5,7 @@ import android.app.Activity
 import scala.io.Source
 import android.view.{ViewGroup, View, LayoutInflater}
 import android.widget.{TextView, ImageButton, BaseAdapter, GridView}
+import android.util.Log
 
 class GridViewActivity extends Activity {
   val TAG = "com.datayumyum.pos.GridViewActivity"
@@ -42,7 +43,10 @@ class GridViewActivity extends Activity {
           val itemButton: View = inflater.inflate(R.layout.item_button, null)
           val imageButton: ImageButton = itemButton.findViewById(R.id.item_image_button).asInstanceOf[ImageButton]
           new DownloadImageTask(imageButton).execute(item.imageURL)
-
+          imageButton.setOnClickListener((v: View) => {
+            Log.i(TAG, item.name)
+            println(item.name)
+          })
           val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
           itemLabel.setText(item.name)
           itemButton
@@ -51,6 +55,13 @@ class GridViewActivity extends Activity {
 
       val imageView: View = itemButtonList(position)
       return imageView
+    }
+  }
+
+  implicit class OnClickListener(onClickCallBack: View => Unit) extends View.OnClickListener {
+
+    def onClick(v: View) {
+      onClickCallBack(v)
     }
   }
 
