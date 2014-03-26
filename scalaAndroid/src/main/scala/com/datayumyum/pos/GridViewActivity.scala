@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.app.Activity
 import scala.io.Source
 import android.view.{ViewGroup, View, LayoutInflater}
-import android.widget.{TextView, ImageButton, BaseAdapter, GridView}
+import android.widget._
 import android.util.Log
 import android.animation.ValueAnimator
 import android.view.animation.BounceInterpolator
@@ -16,11 +16,20 @@ class GridViewActivity extends Activity {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_grid_view)
 
-    val jsonStr: String = Source.fromInputStream(getResources.openRawResource(R.raw.catalog)).mkString
-    val catalog = Catalog.from(jsonStr)
-    val entrees: List[Item] = catalog.findItemsByCategory("Entrees")
-    val gridView: GridView = findViewById(R.id.gridview).asInstanceOf[GridView]
-    gridView.setAdapter(entrees)
+    def configureCategoryViews() {
+      val jsonStr: String = Source.fromInputStream(getResources.openRawResource(R.raw.catalog)).mkString
+      val catalog = Catalog.from(jsonStr)
+      val entrees: List[Item] = catalog.findItemsByCategory("Entrees")
+      val gridView: GridView = findViewById(R.id.gridview).asInstanceOf[GridView]
+      gridView.setAdapter(entrees)
+    }
+    def configureLineItemView() {
+      val listView: ListView = findViewById(R.id.list).asInstanceOf[ListView]
+      listView.setAdapter(ShoppingCart)
+    }
+
+    configureCategoryViews()
+    configureLineItemView()
   }
 
   implicit class GridAdapter(items: List[Item]) extends BaseAdapter {
@@ -41,7 +50,7 @@ class GridViewActivity extends Activity {
           }
         })
         bounceAnimator.start
-        Log.i(TAG, item.name)
+
       })
 
       val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
