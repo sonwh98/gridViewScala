@@ -50,7 +50,7 @@ class GridViewActivity extends Activity {
           }
         })
         bounceAnimator.start
-
+        ShoppingCart.add(item)
       })
 
       val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
