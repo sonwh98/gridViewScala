@@ -127,8 +127,13 @@ class GridViewActivity extends Activity {
       val (quantity, foundItem) = lineItems.find {
         case (quantity, item1) => item == item1
       }.getOrElse((1, item))
-      lineItems.append((quantity + 1, foundItem))
-      Log.i(TAG, item.name)
+      val i = lineItems.indexOf((quantity, foundItem))
+      if (i > -1) {
+        lineItems(i) = (quantity + 1, foundItem)
+      } else {
+        lineItems.append((quantity, foundItem))
+      }
+      notifyDataSetChanged()
     }
   }
 
