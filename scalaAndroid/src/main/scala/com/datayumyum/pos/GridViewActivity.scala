@@ -5,7 +5,6 @@ import android.app.Activity
 import scala.io.Source
 import android.view.{ViewGroup, View, LayoutInflater}
 import android.widget._
-import android.util.Log
 import android.animation.ValueAnimator
 import android.view.animation.BounceInterpolator
 import scala.collection.mutable
@@ -27,6 +26,20 @@ class GridViewActivity extends Activity {
     def configureLineItemView() {
       val listView: ListView = findViewById(R.id.list).asInstanceOf[ListView]
       listView.setAdapter(ShoppingCart)
+
+      val touchListener = new SwipeDismissListViewTouchListener(listView, new SwipeDismissListViewTouchListener.DismissCallbacks() {
+        override def canDismiss(position: Int): Boolean = {
+          return true
+        }
+
+        override def onDismiss(listView: ListView, reverseSortedPositions: Array[Int]) {
+          for (position <- reverseSortedPositions) {
+            ShoppingCart.remove(position)
+          }
+        }
+      })
+      listView.setOnTouchListener(touchListener)
+      listView.setOnScrollListener(touchListener.makeScrollListener())
     }
 
     configureCategoryViews()
@@ -133,6 +146,11 @@ class GridViewActivity extends Activity {
       } else {
         lineItems.append((quantity, foundItem))
       }
+      notifyDataSetChanged()
+    }
+
+    def remove(position: Int) {
+      lineItems.remove(position)
       notifyDataSetChanged()
     }
   }
