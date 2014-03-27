@@ -3,9 +3,10 @@ package com.datayumyum.pos
 import android.widget.BaseAdapter
 import android.view.{ViewGroup, View}
 import android.util.Log
+import scala.collection.mutable
 
 object ShoppingCart extends BaseAdapter {
-  var lineItems: List[(Int, Item)] = List()
+  val lineItems = new mutable.ArrayBuffer[(Int, Item)]()
   val TAG = "com.datayumyum.pos.ShoppingCart"
 
   override def getCount: Int = {
@@ -25,7 +26,10 @@ object ShoppingCart extends BaseAdapter {
   }
 
   def add(item: Item) {
-    val result: Option[(Int, Item)] = lineItems.find(lineItem => item == i)
+    val (quantity, foundItem) = lineItems.find {
+      case (quantity, item1) => item == item1
+    }.getOrElse((1, item))
+    lineItems.append((quantity + 1, foundItem))
     Log.i(TAG, item.name)
 
   }
