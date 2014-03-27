@@ -43,6 +43,7 @@
                         android:id="@+id/textView1"
                         android:text="Qty"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/white"
                         android:background="@drawable/back"/>
 
                 <TextView
@@ -55,6 +56,7 @@
                         android:id="@+id/textView2"
                         android:text="Description"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/white"
                         android:background="@drawable/back"/>
 
                 <TextView
@@ -66,6 +68,7 @@
                         android:id="@+id/textView3"
                         android:text="Price"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/white"
                         android:background="@drawable/back"/>
 
                 <TextView
@@ -77,6 +80,7 @@
                         android:id="@+id/SubTotal"
                         android:text="SubTotal"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/white"
                         android:background="@drawable/back"/>
             </LinearLayout>
 
