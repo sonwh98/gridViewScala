@@ -63,4 +63,5 @@ android {
 dependencies {
     compile 'org.scala-lang:scala-library:2.10.4'
     compile 'com.google.android:support-v4:r7'
+    compile files('lib/StarIOPort3.1.jar')
 }
