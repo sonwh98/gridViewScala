@@ -16,7 +16,7 @@ class GridViewActivity extends Activity {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_grid_view)
 
-    def configureCategoryViews() {
+    def configureCategories() {
       val jsonStr: String = Source.fromInputStream(getResources.openRawResource(R.raw.catalog)).mkString
       val catalog = Catalog.from(jsonStr)
       val entrees: List[Item] = catalog.findItemsByCategory("Entrees")
@@ -27,6 +27,10 @@ class GridViewActivity extends Activity {
       catalog.categories.foreach((catName: String) => {
         val button = new Button(GridViewActivity.this)
         button.setText(catName)
+        button.setOnClickListener((v: View) => {
+          val category: List[Item] = catalog.findItemsByCategory(catName)
+          gridView.setAdapter(category)
+        })
         categoryContainer.addView(button)
       })
     }
@@ -49,7 +53,7 @@ class GridViewActivity extends Activity {
       listView.setOnScrollListener(touchListener.makeScrollListener())
     }
 
-    configureCategoryViews()
+    configureCategories()
     configureLineItemView()
   }
 
