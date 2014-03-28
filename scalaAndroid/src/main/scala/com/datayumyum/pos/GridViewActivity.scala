@@ -119,10 +119,10 @@ class GridViewActivity extends Activity {
       var view = convertView
       if (view == null) {
         view = inflater.inflate(R.layout.row, null);
-        val quantityTextView = view.findViewById(R.id.QUANTITY_CELL).asInstanceOf[TextView]
-        val nameTextView = view.findViewById(R.id.DESCRIPTION_CELL).asInstanceOf[TextView]
-        val priceTextView = view.findViewById(R.id.PRICE_CELL).asInstanceOf[TextView]
-        val subTotalTextView = view.findViewById(R.id.SUB_TOTAL_CELL).asInstanceOf[TextView]
+        val quantityTextView = view.findViewById(R.id.QUANTITY_CELL)
+        val nameTextView = view.findViewById(R.id.DESCRIPTION_CELL)
+        val priceTextView = view.findViewById(R.id.PRICE_CELL)
+        val subTotalTextView = view.findViewById(R.id.SUB_TOTAL_CELL)
         view.setTag((quantityTextView, nameTextView, priceTextView, subTotalTextView))
       }
 
