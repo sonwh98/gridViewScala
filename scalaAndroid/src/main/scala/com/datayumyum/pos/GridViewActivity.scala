@@ -18,18 +18,22 @@ class GridViewActivity extends Activity {
 
     def configureCategories() {
       val jsonStr: String = Source.fromInputStream(getResources.openRawResource(R.raw.catalog)).mkString
-      val catalog = Catalog.from(jsonStr)
-      val entrees: List[Item] = catalog.findItemsByCategory("Entrees")
+      val catalog: mutable.HashMap[String, List[Item]] = Catalog.from(jsonStr)
+      val gridAdapters: mutable.HashMap[String, GridAdapter] = catalog.map(entry => {
+        val categoryName: String = entry._1
+        val itemInCategory: List[Item] = entry._2
+        (categoryName, new GridAdapter(itemInCategory))
+      })
+
       val gridView: GridView = findViewById(R.id.gridview).asInstanceOf[GridView]
-      gridView.setAdapter(entrees)
+      gridView.setAdapter(gridAdapters("Entrees"))
 
       val categoryContainer = findViewById(R.id.categoryContainer).asInstanceOf[LinearLayout]
-      catalog.categories.foreach((catName: String) => {
+      catalog.keySet.foreach((catName: String) => {
         val button = new Button(GridViewActivity.this)
         button.setText(catName)
         button.setOnClickListener((v: View) => {
-          val category: List[Item] = catalog.findItemsByCategory(catName)
-          gridView.setAdapter(category)
+          gridView.setAdapter(gridAdapters(catName))
         })
         categoryContainer.addView(button)
       })
@@ -57,7 +61,7 @@ class GridViewActivity extends Activity {
     configureLineItemView()
   }
 
-  implicit class GridAdapter(items: List[Item]) extends BaseAdapter {
+  class GridAdapter(items: List[Item]) extends BaseAdapter {
     val itemButtonList: List[View] = items.map((item: Item) => {
       val inflater: LayoutInflater = getLayoutInflater()
       val itemButton: View = inflater.inflate(R.layout.item_button, null)

@@ -4,7 +4,7 @@ import scala.util.parsing.json.JSON
 import scala.collection.mutable
 
 object Catalog {
-  def from(jsonStr: String): Catalog = {
+  def from(jsonStr: String): mutable.HashMap[String, List[Item]] = {
     val result: Option[Any] = JSON.parseFull(jsonStr)
     val parsedMap: Map[String, List[Map[String, Any]]] = result.get.asInstanceOf[Map[String, List[Map[String, Any]]]]
     val menu: mutable.HashMap[String, List[Item]] = mutable.HashMap.empty[String, List[Item]]
@@ -15,17 +15,6 @@ object Catalog {
       menu(category) = itemList
     }
 
-    return new Catalog(menu)
+    return menu
   }
 }
-
-class Catalog(map: mutable.HashMap[String, List[Item]]) {
-  def findItemsByCategory(name: String): List[Item] = {
-    map(name)
-  }
-
-  def categories(): List[String] = {
-    map.keySet.toList
-  }
-}
-
