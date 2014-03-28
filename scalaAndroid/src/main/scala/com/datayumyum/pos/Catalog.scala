@@ -23,5 +23,9 @@ class Catalog(map: mutable.HashMap[String, List[Item]]) {
   def findItemsByCategory(name: String): List[Item] = {
     map(name)
   }
+
+  def categories(): List[String] = {
+    map.keySet.toList
+  }
 }
 

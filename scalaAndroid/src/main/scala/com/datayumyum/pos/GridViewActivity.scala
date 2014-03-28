@@ -22,6 +22,13 @@ class GridViewActivity extends Activity {
       val entrees: List[Item] = catalog.findItemsByCategory("Entrees")
       val gridView: GridView = findViewById(R.id.gridview).asInstanceOf[GridView]
       gridView.setAdapter(entrees)
+
+      val categoryContainer = findViewById(R.id.categoryContainer).asInstanceOf[LinearLayout]
+      catalog.categories.foreach((catName: String) => {
+        val button = new Button(GridViewActivity.this)
+        button.setText(catName)
+        categoryContainer.addView(button)
+      })
     }
     def configureLineItemView() {
       val listView: ListView = findViewById(R.id.list).asInstanceOf[ListView]
