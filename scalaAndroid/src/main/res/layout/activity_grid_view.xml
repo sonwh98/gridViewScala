@@ -8,7 +8,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:orientation="horizontal"
                   android:layout_width="fill_parent"
-                  android:layout_height="fill_parent">
+                  android:layout_height="fill_parent" android:baselineAligned="false">
         <!-- The primary full-screen view. This can be replaced with whatever view
              is needed to present your content, e.g. VideoView, SurfaceView,
              TextureView, etc. -->
@@ -34,7 +34,8 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
 
                 <TextView
                         android:layout_width="0dp"
@@ -86,12 +87,19 @@
 
             <ListView
                     android:id="@+id/list"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:transcriptMode="alwaysScroll"
+                    android:layout_weight="3"
                     >
             </ListView>
-
+            <Button
+                    android:id="@+id/submitOrder"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Submit Order"
+                    android:layout_weight="1"
+                    />
         </LinearLayout>
 
     </LinearLayout>
