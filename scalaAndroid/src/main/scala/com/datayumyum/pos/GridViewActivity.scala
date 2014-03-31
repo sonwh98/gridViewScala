@@ -39,22 +39,28 @@ class GridViewActivity extends Activity {
       })
     }
     def configureLineItemView() {
-      val listView: ListView = findViewById(R.id.list).asInstanceOf[ListView]
-      listView.setAdapter(ShoppingCart)
+//      val listView: ListView = findViewById(R.id.list).asInstanceOf[ListView]
+//      listView.setAdapter(ShoppingCart)
+//
+//      val touchListener = new SwipeDismissListViewTouchListener(listView, new SwipeDismissListViewTouchListener.DismissCallbacks() {
+//        override def canDismiss(position: Int): Boolean = {
+//          return true
+//        }
+//
+//        override def onDismiss(listView: ListView, reverseSortedPositions: Array[Int]) {
+//          for (position <- reverseSortedPositions) {
+//            ShoppingCart.remove(position)
+//          }
+//        }
+//      })
+//      listView.setOnTouchListener(touchListener)
+//      listView.setOnScrollListener(touchListener.makeScrollListener())
 
-      val touchListener = new SwipeDismissListViewTouchListener(listView, new SwipeDismissListViewTouchListener.DismissCallbacks() {
-        override def canDismiss(position: Int): Boolean = {
-          return true
-        }
-
-        override def onDismiss(listView: ListView, reverseSortedPositions: Array[Int]) {
-          for (position <- reverseSortedPositions) {
-            ShoppingCart.remove(position)
-          }
-        }
+      val submitButton: Button = findViewById(R.id.submitOrder).asInstanceOf[Button]
+      submitButton.setOnClickListener((view: View) => {
+        val hello = "Hello World".getBytes()
+        Printer.sendCommand(hello)
       })
-      listView.setOnTouchListener(touchListener)
-      listView.setOnScrollListener(touchListener.makeScrollListener())
     }
 
     configureCategories()
