@@ -8,6 +8,7 @@ import android.widget._
 import android.animation.ValueAnimator
 import android.view.animation.BounceInterpolator
 import scala.collection.mutable
+import android.util.Log
 
 class GridViewActivity extends Activity {
   val TAG = "com.datayumyum.pos.GridViewActivity"
@@ -55,16 +56,31 @@ class GridViewActivity extends Activity {
       })
       listView.setOnTouchListener(touchListener)
       listView.setOnScrollListener(touchListener.makeScrollListener())
-
-      val submitButton: Button = findViewById(R.id.submitOrder).asInstanceOf[Button]
-      submitButton.setOnClickListener((view: View) => {
-        val hello = "Hello World".getBytes()
-        Printer.sendCommand(hello)
-      })
     }
+    def configureNumberPad() {
 
+      for (i <- R.id.button0 to R.id.button9) {
+        val button = findViewById(i).asInstanceOf[Button]
+        button.setOnClickListener((v: View) => {
+          Accumulator.push(button.getText().toString())
+        })
+      }
+
+      val submitOrder = (v: View) => {
+        val tender: Int = Accumulator.evaluate()
+        Log.i(TAG, "submitOrder cashTender: " + tender.toString)
+      }
+
+      val cashButton = findViewById(R.id.cashButton)
+      val creditButton = findViewById(R.id.creditButton)
+
+      cashButton.setOnClickListener(submitOrder)
+      creditButton.setOnClickListener(submitOrder)
+
+    }
     configureCategories()
     configureLineItemView()
+    configureNumberPad()
   }
 
   class GridAdapter(items: List[Item]) extends BaseAdapter {
@@ -162,11 +178,17 @@ class GridViewActivity extends Activity {
         case (quantity, item1) => item == item1
       }.getOrElse((1, item))
       val i = lineItems.indexOf((quantity, foundItem))
+      val quantityInAccumulator: Int = Accumulator.evaluate()
       if (i > -1) {
-        lineItems(i) = (quantity + 1, foundItem)
+        if (quantityInAccumulator == 0) {
+          lineItems(i) = (quantity + 1, foundItem)
+        } else {
+          lineItems(i) = (quantity + quantityInAccumulator - 1, foundItem)
+        }
       } else {
-        lineItems.append((quantity, foundItem))
+        lineItems.append((quantity + quantityInAccumulator - 1, foundItem))
       }
+      Accumulator.reset()
       notifyDataSetChanged()
     }
 
