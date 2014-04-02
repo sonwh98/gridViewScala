@@ -9,6 +9,8 @@ import android.animation.ValueAnimator
 import android.view.animation.BounceInterpolator
 import scala.collection.mutable
 import android.util.Log
+import java.util.Locale
+import java.text.NumberFormat
 
 class GridViewActivity extends Activity {
   val TAG = "com.datayumyum.pos.GridViewActivity"
@@ -30,11 +32,11 @@ class GridViewActivity extends Activity {
       gridView.setAdapter(gridAdapters("Entrees"))
 
       val categoryContainer = findViewById(R.id.categoryContainer).asInstanceOf[LinearLayout]
-      catalog.keySet.foreach((catName: String) => {
+      catalog.keySet.foreach((category: String) => {
         val button = new Button(GridViewActivity.this)
-        button.setText(catName)
+        button.setText(category)
         button.setOnClickListener((v: View) => {
-          gridView.setAdapter(gridAdapters(catName))
+          gridView.setAdapter(gridAdapters(category))
         })
         categoryContainer.addView(button)
       })
@@ -67,7 +69,7 @@ class GridViewActivity extends Activity {
       }
 
       val submitOrder = (v: View) => {
-        val tender = Accumulator.evaluate()
+        val tender = Accumulator.pop()
         Log.i(TAG, "submitOrder cashTender: " + tender.toString)
         Accumulator.reset()
       }
@@ -102,13 +104,12 @@ class GridViewActivity extends Activity {
           }
         })
         bounceAnimator.start
-        val quantity = Accumulator.evaluate().asInstanceOf[Int]
+        val quantity = Accumulator.pop().asInstanceOf[Int]
         if (quantity == 0) {
           ShoppingCart.add(item)
         } else {
           ShoppingCart.add(quantity, item)
         }
-        Accumulator.reset()
       })
 
       val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
@@ -146,6 +147,7 @@ class GridViewActivity extends Activity {
     val lineItems = new mutable.ArrayBuffer[(Int, Item)]()
     val TAG = "com.datayumyum.pos.ShoppingCart"
     val inflater: LayoutInflater = getLayoutInflater()
+    val currencyFormat = NumberFormat.getCurrencyInstance(Locale.US)
 
     override def getCount: Int = {
       return lineItems.size
@@ -174,9 +176,9 @@ class GridViewActivity extends Activity {
       val (quantity, item) = lineItems(position)
       quantityTextView.setText(quantity.toString)
       nameTextView.setText(item.name)
-      priceTextView.setText(item.price.toString)
+      priceTextView.setText(currencyFormat.format(item.price))
       val subTotal = quantity * item.price
-      subTotalTextView.setText(subTotal.toString)
+      subTotalTextView.setText(currencyFormat.format(subTotal))
       return view
     }
 
