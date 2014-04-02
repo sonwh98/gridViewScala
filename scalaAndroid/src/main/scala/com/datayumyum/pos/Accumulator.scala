@@ -11,11 +11,15 @@ object Accumulator {
     display.setText(value)
   }
 
-  def evaluate(): Double = {
-    if (value.length > 0) {
-      return value.toDouble
-    } else {
-      return 0
+  def pop(): Double = {
+    try {
+      if (value.length > 0) {
+        return value.toDouble
+      } else {
+        return 0
+      }
+    } finally {
+      reset
     }
   }
 
