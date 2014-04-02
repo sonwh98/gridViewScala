@@ -115,7 +115,7 @@
 
                 <TableRow>
                     <Button android:id="@+id/button9" android:text="9"/>
-                    <Button android:id="@+id/decimal" android:text="."/>
+                    <Button android:id="@+id/decimalButton" android:text="."/>
                     <Button android:id="@+id/cashButton" android:text="Cash"/>
                     <Button android:id="@+id/creditButton" android:text="Credit"/>
                 </TableRow>
