@@ -59,7 +59,7 @@ class GridViewActivity extends Activity {
     }
     def configureNumberPad() {
       Accumulator.display = findViewById(R.id.accumulatorDisplay).asInstanceOf[TextView]
-      for (i <- R.id.button0 to R.id.button9) {
+      for (i <- R.id.button0 to R.id.decimalButton) {
         val button = findViewById(i).asInstanceOf[Button]
         button.setOnClickListener((v: View) => {
           Accumulator.push(button.getText().toString())
@@ -69,6 +69,7 @@ class GridViewActivity extends Activity {
       val submitOrder = (v: View) => {
         val tender = Accumulator.evaluate()
         Log.i(TAG, "submitOrder cashTender: " + tender.toString)
+        Accumulator.reset()
       }
 
       val cashButton = findViewById(R.id.cashButton)
