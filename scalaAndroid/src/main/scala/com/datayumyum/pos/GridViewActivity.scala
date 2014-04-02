@@ -101,7 +101,13 @@ class GridViewActivity extends Activity {
           }
         })
         bounceAnimator.start
-        ShoppingCart.add(item)
+        val quantity = Accumulator.evaluate()
+        if (quantity == 0) {
+          ShoppingCart.add(item)
+        } else {
+          ShoppingCart.add(quantity, item)
+        }
+        Accumulator.reset()
       })
 
       val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
@@ -173,23 +179,22 @@ class GridViewActivity extends Activity {
       return view
     }
 
-    def add(item: Item) {
-      val (quantity, foundItem) = lineItems.find {
-        case (quantity, item1) => item == item1
-      }.getOrElse((1, item))
-      val i = lineItems.indexOf((quantity, foundItem))
-      val quantityInAccumulator: Int = Accumulator.evaluate()
+    def add(quantity: Int, item: Item) {
+      val (currentQuantity, foundItem) = lineItems.find {
+        case (quantity1, item1) => item == item1
+      }.getOrElse((0, item))
+      val i = lineItems.indexOf((currentQuantity, foundItem))
       if (i > -1) {
-        if (quantityInAccumulator == 0) {
-          lineItems(i) = (quantity + 1, foundItem)
-        } else {
-          lineItems(i) = (quantity + quantityInAccumulator - 1, foundItem)
-        }
+        val updatedQuantity = currentQuantity + quantity
+        lineItems(i) = (updatedQuantity, item)
       } else {
-        lineItems.append((quantity + quantityInAccumulator - 1, foundItem))
+        lineItems.append((quantity, item))
       }
-      Accumulator.reset()
       notifyDataSetChanged()
+    }
+
+    def add(item: Item) {
+      add(1, item)
     }
 
     def remove(position: Int) {
