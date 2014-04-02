@@ -67,6 +67,9 @@ class GridViewActivity extends Activity {
           Accumulator.push(button.getText().toString())
         })
       }
+      findViewById(R.id.clearButton).setOnClickListener {
+        (view: View) => Accumulator.reset()
+      }
 
       val submitOrder = (v: View) => {
         val tender = Accumulator.pop()
