@@ -58,7 +58,7 @@ class GridViewActivity extends Activity {
       listView.setOnScrollListener(touchListener.makeScrollListener())
     }
     def configureNumberPad() {
-
+      Accumulator.display = findViewById(R.id.accumulatorDisplay).asInstanceOf[TextView]
       for (i <- R.id.button0 to R.id.button9) {
         val button = findViewById(i).asInstanceOf[Button]
         button.setOnClickListener((v: View) => {
@@ -67,7 +67,7 @@ class GridViewActivity extends Activity {
       }
 
       val submitOrder = (v: View) => {
-        val tender: Int = Accumulator.evaluate()
+        val tender = Accumulator.evaluate()
         Log.i(TAG, "submitOrder cashTender: " + tender.toString)
       }
 
@@ -101,7 +101,7 @@ class GridViewActivity extends Activity {
           }
         })
         bounceAnimator.start
-        val quantity = Accumulator.evaluate()
+        val quantity = Accumulator.evaluate().asInstanceOf[Int]
         if (quantity == 0) {
           ShoppingCart.add(item)
         } else {
