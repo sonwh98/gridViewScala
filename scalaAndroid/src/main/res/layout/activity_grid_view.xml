@@ -70,7 +70,9 @@
                         android:text="Price"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/white"
-                        android:background="@drawable/back"/>
+                        android:background="@drawable/back"
+                        android:gravity="right"
+                        />
 
                 <TextView
                         android:layout_width="0dp"
@@ -82,7 +84,9 @@
                         android:text="SubTotal"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/white"
-                        android:background="@drawable/back"/>
+                        android:background="@drawable/back"
+                        android:gravity="right"
+                        />
             </LinearLayout>
 
             <ListView
