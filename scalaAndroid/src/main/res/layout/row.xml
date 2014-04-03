@@ -10,7 +10,8 @@
               android:layout_width="0dp"
               android:layout_weight="1"
               android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-              android:layout_height="wrap_content"/>
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"/>
 
     <TextView android:id="@+id/DESCRIPTION_CELL"
               android:layout_width="0dp"
