@@ -31,6 +31,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         imageButton.setImageBitmap(result);
-        Log.i(TAG, "loaded " + url);
+        Log.d(TAG, "loaded " + url);
     }
 }
