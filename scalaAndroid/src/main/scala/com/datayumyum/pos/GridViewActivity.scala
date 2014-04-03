@@ -5,12 +5,13 @@ import android.app.Activity
 import scala.io.Source
 import android.view.{ViewGroup, View, LayoutInflater}
 import android.widget._
-import android.animation.ValueAnimator
+import android.animation.{ArgbEvaluator, ValueAnimator}
 import android.view.animation.BounceInterpolator
 import scala.collection.mutable
 import android.util.Log
 import java.util.Locale
 import java.text.NumberFormat
+import android.animation.ValueAnimator.AnimatorUpdateListener
 
 class GridViewActivity extends Activity {
   val TAG = "com.datayumyum.pos.GridViewActivity"
@@ -148,6 +149,7 @@ class GridViewActivity extends Activity {
 
   object ShoppingCart extends BaseAdapter {
     val lineItems = new mutable.ArrayBuffer[(Int, Item)]()
+    val lineItemViews = mutable.MutableList.empty[View]
     val TAG = "com.datayumyum.pos.ShoppingCart"
     val inflater: LayoutInflater = getLayoutInflater()
     val currencyFormat = NumberFormat.getCurrencyInstance(Locale.US)
@@ -174,6 +176,11 @@ class GridViewActivity extends Activity {
         val subTotalTextView = view.findViewById(R.id.SUB_TOTAL_CELL)
         view.setTag((quantityTextView, nameTextView, priceTextView, subTotalTextView))
       }
+      if (position > lineItemViews.size - 1) {
+        lineItemViews += view
+      } else {
+        lineItemViews(position) = view
+      }
 
       val (quantityTextView: TextView, nameTextView: TextView, priceTextView: TextView, subTotalTextView: TextView) = view.getTag()
       val (quantity, item) = lineItems(position)
@@ -182,6 +189,7 @@ class GridViewActivity extends Activity {
       priceTextView.setText(currencyFormat.format(item.price))
       val subTotal = quantity * item.price
       subTotalTextView.setText(currencyFormat.format(subTotal))
+
       return view
     }
 
@@ -193,10 +201,28 @@ class GridViewActivity extends Activity {
       if (i > -1) {
         val updatedQuantity = currentQuantity + quantity
         lineItems(i) = (updatedQuantity, item)
+
+        animateView(lineItemViews(i))
       } else {
         lineItems.append((quantity, item))
       }
       notifyDataSetChanged()
+    }
+
+    def animateView(view: View) {
+      if (view != null) {
+        val colorFrom: java.lang.Integer = getResources().getColor(R.color.red)
+        val colorTo: java.lang.Integer = getResources().getColor(R.color.background)
+        val colorAnimation: ValueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo).asInstanceOf[ValueAnimator]
+        colorAnimation.addUpdateListener(new AnimatorUpdateListener() {
+          override def onAnimationUpdate(animator: ValueAnimator) {
+            Log.i(TAG, "view=" + view + " animator=" + animator)
+            view.setBackgroundColor(animator.getAnimatedValue().asInstanceOf[Int])
+          }
+
+        })
+        colorAnimation.start()
+      }
     }
 
     def add(item: Item) {
