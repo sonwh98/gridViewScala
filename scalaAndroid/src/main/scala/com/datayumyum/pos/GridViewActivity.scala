@@ -81,6 +81,7 @@ class GridViewActivity extends Activity {
 
         val change: Double = tender - ShoppingCart.calculateTotal()
         findViewById(R.id.change).asInstanceOf[TextView].setText(currencyFormat.format(change))
+        ShoppingCart.checkout()
       }
 
       val cashButton = findViewById(R.id.cashButton)
@@ -157,7 +158,7 @@ class GridViewActivity extends Activity {
     val lineItemViews = mutable.MutableList.empty[View]
     val TAG = "com.datayumyum.pos.ShoppingCart"
     val inflater: LayoutInflater = getLayoutInflater()
-
+    var reset: Boolean = true
 
     override def getCount: Int = {
       return lineItems.size
@@ -199,6 +200,11 @@ class GridViewActivity extends Activity {
     }
 
     def add(quantity: Int, item: Item) {
+      if (reset) {
+        clear()
+        reset = false
+      }
+
       val (currentQuantity, foundItem) = lineItems.find {
         case (quantity1, item1) => item == item1
       }.getOrElse((0, item))
@@ -260,6 +266,19 @@ class GridViewActivity extends Activity {
 
     def remove(position: Int) {
       lineItems.remove(position)
+      displayTotals()
+      notifyDataSetChanged()
+    }
+
+    def checkout() {
+      reset = true
+    }
+
+    def clear() {
+      lineItems.clear()
+      lineItemViews.clear()
+      findViewById(R.id.tender).asInstanceOf[TextView].setText("")
+      findViewById(R.id.change).asInstanceOf[TextView].setText("")
       displayTotals()
       notifyDataSetChanged()
     }
