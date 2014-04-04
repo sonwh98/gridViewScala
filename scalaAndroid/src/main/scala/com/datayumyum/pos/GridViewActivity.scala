@@ -15,6 +15,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener
 
 class GridViewActivity extends Activity {
   val TAG = "com.datayumyum.pos.GridViewActivity"
+  val currencyFormat = NumberFormat.getCurrencyInstance(Locale.US)
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
@@ -73,9 +74,13 @@ class GridViewActivity extends Activity {
       }
 
       val submitOrder = (v: View) => {
-        val tender = Accumulator.pop()
+        val tender: Double = Accumulator.pop()
         Log.i(TAG, "submitOrder cashTender: " + tender.toString)
         Accumulator.reset()
+        findViewById(R.id.tender).asInstanceOf[TextView].setText(currencyFormat.format(tender))
+
+        val change: Double = tender - ShoppingCart.calculateTotal()
+        findViewById(R.id.change).asInstanceOf[TextView].setText(currencyFormat.format(change))
       }
 
       val cashButton = findViewById(R.id.cashButton)
@@ -152,7 +157,7 @@ class GridViewActivity extends Activity {
     val lineItemViews = mutable.MutableList.empty[View]
     val TAG = "com.datayumyum.pos.ShoppingCart"
     val inflater: LayoutInflater = getLayoutInflater()
-    val currencyFormat = NumberFormat.getCurrencyInstance(Locale.US)
+
 
     override def getCount: Int = {
       return lineItems.size
@@ -210,20 +215,27 @@ class GridViewActivity extends Activity {
       notifyDataSetChanged()
     }
 
-    def displayTotals() {
-      val subTotal: Double = lineItems.map {
+    def calculateSubTotal(): Double = {
+      lineItems.map {
         case (quantity, item) => {
           quantity * item.price
         }
       }.sum
-      val subTotalTextView: TextView = findViewById(R.id.subTotal).asInstanceOf[TextView]
-      val formattedSubTotal: String = currencyFormat.format(subTotal)
-      subTotalTextView.setText(formattedSubTotal)
-      val tax = 0.0
-      val total = subTotal + tax
-      val formattedTotal = currencyFormat.format(total)
-      val totalTextView = findViewById(R.id.total).asInstanceOf[TextView]
-      totalTextView.setText(formattedTotal)
+    }
+
+    def calculateTax(): Double = {
+      val taxRate = 0.08
+      taxRate * calculateSubTotal()
+    }
+
+    def calculateTotal(): Double = {
+      calculateSubTotal + calculateTax
+    }
+
+    def displayTotals() {
+      findViewById(R.id.subTotal).asInstanceOf[TextView].setText(currencyFormat.format(calculateSubTotal()))
+      findViewById(R.id.tax).asInstanceOf[TextView].setText(currencyFormat.format(calculateTax()))
+      findViewById(R.id.total).asInstanceOf[TextView].setText(currencyFormat.format(calculateTotal()))
     }
 
     def animateView(view: View) {

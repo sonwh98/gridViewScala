@@ -133,15 +133,23 @@
                              android:background="@color/white">
                     <TableRow>
                         <TextView android:text="Sub Total"/>
-                        <TextView android:id="@+id/subTotal" />
+                        <TextView android:id="@+id/subTotal"/>
                     </TableRow>
                     <TableRow>
-                        <TextView android:text="Tax"/>
-                        <TextView android:id="@+id/tax" />
+                        <TextView android:text="Tax 8%"/>
+                        <TextView android:id="@+id/tax"/>
                     </TableRow>
                     <TableRow>
                         <TextView android:text="Total"/>
-                        <TextView android:id="@+id/total" />
+                        <TextView android:id="@+id/total"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Tender"/>
+                        <TextView android:id="@+id/tender"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Change"/>
+                        <TextView android:id="@+id/change"/>
                     </TableRow>
                 </TableLayout>
             </RelativeLayout>
