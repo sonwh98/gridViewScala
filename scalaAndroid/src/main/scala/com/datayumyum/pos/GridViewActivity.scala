@@ -272,6 +272,13 @@ class GridViewActivity extends Activity {
 
     def checkout() {
       reset = true
+      val receiptPrinterData = lineItems.map {
+        case (quantity, item) => {
+          f"$quantity%s ${item.name} ${item.price * quantity}"
+        }
+      }.mkString("\n")
+      Printer.sendCommand(receiptPrinterData.getBytes)
+      Printer.cutPaper()
     }
 
     def clear() {
