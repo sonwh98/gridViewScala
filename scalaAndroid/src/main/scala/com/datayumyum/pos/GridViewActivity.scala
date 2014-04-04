@@ -277,8 +277,12 @@ class GridViewActivity extends Activity {
           f"$quantity%s ${item.name} ${item.price * quantity}"
         }
       }.mkString("\n")
-      Printer.sendCommand(receiptPrinterData.getBytes)
-      Printer.cutPaper()
+      val cmd = Array.concat(receiptPrinterData.getBytes, Printer.CUT)
+      new Thread() {
+        override def run() {
+          Printer.sendCommand(cmd)
+        }
+      }.start()
     }
 
     def clear() {
