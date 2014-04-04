@@ -98,32 +98,54 @@
             </ListView>
             <TextView android:id="@+id/accumulatorDisplay" android:layout_width="match_parent"
                       android:layout_height="10pt" android:background="#FFFF00"/>
-            <TableLayout android:id="@+id/numberPad" android:layout_width="match_parent" android:layout_weight="1"
-                         android:layout_height="0dp" android:gravity="center|bottom" android:background="@color/white">
-                <TableRow>
-                    <Button android:id="@+id/button0" android:text="0"/>
-                    <Button android:id="@+id/button1" android:text="1"/>
-                    <Button android:id="@+id/button2" android:text="2"/>
-                </TableRow>
-                <TableRow>
-                    <Button android:id="@+id/button3" android:text="3"/>
-                    <Button android:id="@+id/button4" android:text="4"/>
-                    <Button android:id="@+id/button5" android:text="5"/>
-                </TableRow>
-                <TableRow>
-                    <Button android:id="@+id/button6" android:text="6"/>
-                    <Button android:id="@+id/button7" android:text="7"/>
-                    <Button android:id="@+id/button8" android:text="8"/>
-                    <Button android:id="@+id/cashButton" android:text="Cash"/>
-                </TableRow>
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="0pt" android:layout_weight="1"
+                            android:gravity="bottom">
+                <TableLayout android:id="@+id/numberPad" android:layout_width="wrap_content"
+                             android:layout_height="match_parent"
+                             android:background="@color/white">
+                    <TableRow>
+                        <Button android:id="@+id/button0" android:text="0"/>
+                        <Button android:id="@+id/button1" android:text="1"/>
+                        <Button android:id="@+id/button2" android:text="2"/>
+                    </TableRow>
+                    <TableRow>
+                        <Button android:id="@+id/button3" android:text="3"/>
+                        <Button android:id="@+id/button4" android:text="4"/>
+                        <Button android:id="@+id/button5" android:text="5"/>
+                    </TableRow>
+                    <TableRow>
+                        <Button android:id="@+id/button6" android:text="6"/>
+                        <Button android:id="@+id/button7" android:text="7"/>
+                        <Button android:id="@+id/button8" android:text="8"/>
+                        <Button android:id="@+id/cashButton" android:text="Cash"/>
+                    </TableRow>
 
-                <TableRow>
-                    <Button android:id="@+id/button9" android:text="9"/>
-                    <Button android:id="@+id/decimalButton" android:text="."/>
-                    <Button android:id="@+id/clearButton" android:text="Clear"/>
-                    <Button android:id="@+id/creditButton" android:text="Credit"/>
-                </TableRow>
-            </TableLayout>
+                    <TableRow>
+                        <Button android:id="@+id/button9" android:text="9"/>
+                        <Button android:id="@+id/decimalButton" android:text="."/>
+                        <Button android:id="@+id/clearButton" android:text="Clear"/>
+                        <Button android:id="@+id/creditButton" android:text="Credit"/>
+                    </TableRow>
+                </TableLayout>
+
+                <TableLayout android:layout_width="wrap_content" android:layout_height="match_parent"
+                             android:layout_toRightOf="@id/numberPad" android:layout_alignParentRight="true"
+                             android:background="@color/white">
+                    <TableRow>
+                        <TextView android:text="Sub Total"/>
+                        <TextView android:id="@+id/subTotal" />
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Tax"/>
+                        <TextView android:id="@+id/tax" />
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Total"/>
+                        <TextView android:id="@+id/total" />
+                    </TableRow>
+                </TableLayout>
+            </RelativeLayout>
+
 
         </LinearLayout>
 

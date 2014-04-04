@@ -206,7 +206,24 @@ class GridViewActivity extends Activity {
       } else {
         lineItems.append((quantity, item))
       }
+      displayTotals()
       notifyDataSetChanged()
+    }
+
+    def displayTotals() {
+      val subTotal: Double = lineItems.map {
+        case (quantity, item) => {
+          quantity * item.price
+        }
+      }.sum
+      val subTotalTextView: TextView = findViewById(R.id.subTotal).asInstanceOf[TextView]
+      val formattedSubTotal: String = currencyFormat.format(subTotal)
+      subTotalTextView.setText(formattedSubTotal)
+      val tax = 0.0
+      val total = subTotal + tax
+      val formattedTotal = currencyFormat.format(total)
+      val totalTextView = findViewById(R.id.total).asInstanceOf[TextView]
+      totalTextView.setText(formattedTotal)
     }
 
     def animateView(view: View) {
@@ -231,6 +248,7 @@ class GridViewActivity extends Activity {
 
     def remove(position: Int) {
       lineItems.remove(position)
+      displayTotals()
       notifyDataSetChanged()
     }
   }
