@@ -65,12 +65,17 @@ class GridViewActivity extends Activity {
     }
     def configureNumberPad() {
       Accumulator.display = findViewById(R.id.accumulatorDisplay).asInstanceOf[TextView]
-      for (i <- R.id.button0 to R.id.decimalButton) {
-        val button = findViewById(i).asInstanceOf[Button]
-        button.setOnClickListener((v: View) => {
-          Accumulator.push(button.getText().toString())
-        })
+      val buttonIdList = List(R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7,
+        R.id.button8, R.id.button9, R.id.decimalButton)
+      buttonIdList.foreach {
+        id => {
+          val button = findViewById(id).asInstanceOf[Button]
+          button.setOnClickListener((v: View) => {
+            Accumulator.push(button.getText().toString())
+          })
+        }
       }
+
       findViewById(R.id.clearButton).setOnClickListener {
         (view: View) => Accumulator.reset()
       }
@@ -130,7 +135,7 @@ class GridViewActivity extends Activity {
         if (quantity == 0) {
           ShoppingCart.add(item)
         } else {
-          ShoppingCart.add(quantity, item)
+          ShoppingCart.add(item, quantity)
         }
       })
 
@@ -211,7 +216,7 @@ class GridViewActivity extends Activity {
       return view
     }
 
-    def add(quantity: Int, item: Item) {
+    def add(item: Item, quantity: Int = 1) {
       if (reset) {
         clear()
         reset = false
@@ -270,10 +275,6 @@ class GridViewActivity extends Activity {
         })
         colorAnimation.start()
       }
-    }
-
-    def add(item: Item) {
-      add(1, item)
     }
 
     def remove(position: Int) {
