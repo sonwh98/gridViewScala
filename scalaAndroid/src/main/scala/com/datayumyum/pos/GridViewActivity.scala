@@ -12,6 +12,7 @@ import android.util.Log
 import java.util.Locale
 import java.text.NumberFormat
 import android.animation.ValueAnimator.AnimatorUpdateListener
+import com.android.debug.hv.ViewServer
 
 class GridViewActivity extends Activity {
   val TAG = "com.datayumyum.pos.GridViewActivity"
@@ -20,6 +21,7 @@ class GridViewActivity extends Activity {
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_grid_view)
+    ViewServer.get(this).addWindow(this)
 
     def configureCategories() {
       val jsonStr: String = Source.fromInputStream(getResources.openRawResource(R.raw.catalog)).mkString
@@ -94,6 +96,16 @@ class GridViewActivity extends Activity {
     configureCategories()
     configureLineItemView()
     configureNumberPad()
+  }
+
+  override def onDestroy() {
+    super.onDestroy()
+    ViewServer.get(this).removeWindow(this)
+  }
+
+  override def onResume() {
+    super.onResume()
+    ViewServer.get(this).setFocusedWindow(this)
   }
 
   class GridAdapter(items: List[Item]) extends BaseAdapter {
