@@ -64,7 +64,6 @@ class GridViewActivity extends Activity {
       listView.setOnScrollListener(touchListener.makeScrollListener())
     }
     def configureNumberPad() {
-      Accumulator.display = findViewById(R.id.accumulatorDisplay).asInstanceOf[TextView]
       val buttonIdList = List(R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7,
         R.id.button8, R.id.button9, R.id.decimalButton)
       buttonIdList.foreach {
@@ -305,6 +304,33 @@ class GridViewActivity extends Activity {
       findViewById(R.id.change).asInstanceOf[TextView].setText("")
       displayTotals()
       notifyDataSetChanged()
+    }
+  }
+
+  object Accumulator {
+    var value: String = ""
+    val display: TextView = findViewById(R.id.accumulatorDisplay).asInstanceOf[TextView]
+
+    def push(data: String) {
+      value = value + data
+      display.setText(value)
+    }
+
+    def pop(): Double = {
+      try {
+        if (value.length > 0) {
+          return value.toDouble
+        } else {
+          return 0
+        }
+      } finally {
+        reset
+      }
+    }
+
+    def reset() {
+      value = ""
+      display.setText(value)
     }
   }
 
