@@ -14,8 +14,8 @@
              TextureView, etc. -->
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
                   android:id="@+id/gridview"
-                  android:layout_weight="2"
-                  android:layout_width="fill_parent"
+                  android:layout_weight="5"
+                  android:layout_width="0sp"
                   android:layout_height="fill_parent"
                   android:columnWidth="90dp"
                   android:numColumns="auto_fit"
@@ -27,9 +27,9 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                       android:orientation="vertical"
-                      android:layout_width="match_parent"
+                      android:layout_width="0sp"
                       android:layout_height="match_parent"
-                      android:layout_weight="5">
+                      android:layout_weight="3">
 
             <LinearLayout
                     android:orientation="horizontal"
@@ -99,10 +99,9 @@
             <TextView android:id="@+id/accumulatorDisplay" android:layout_width="match_parent"
                       android:layout_height="10pt" android:background="#FFFF00"/>
             <RelativeLayout android:layout_width="match_parent" android:layout_height="0pt" android:layout_weight="1"
-                            android:gravity="bottom">
+                            android:gravity="bottom" android:background="@color/white">
                 <TableLayout android:id="@+id/numberPad" android:layout_width="wrap_content"
-                             android:layout_height="match_parent"
-                             android:background="@color/white">
+                             android:layout_height="match_parent" android:layout_alignParentLeft="true">
                     <TableRow>
                         <Button android:id="@+id/button0" android:text="0"/>
                         <Button android:id="@+id/button1" android:text="1"/>
@@ -129,27 +128,26 @@
                 </TableLayout>
 
                 <TableLayout android:layout_width="wrap_content" android:layout_height="match_parent"
-                             android:layout_toRightOf="@id/numberPad" android:layout_alignParentRight="true"
-                             android:background="@color/white">
+                             android:layout_alignParentRight="true">
                     <TableRow>
-                        <TextView android:text="Sub Total"/>
-                        <TextView android:id="@+id/subTotal"/>
+                        <TextView android:text="Sub Total" android:layout_marginRight="10dp"/>
+                        <TextView android:id="@+id/subTotal" android:text="$0.00"/>
                     </TableRow>
                     <TableRow>
-                        <TextView android:text="Tax 8%"/>
-                        <TextView android:id="@+id/tax"/>
+                        <TextView android:text="Tax 8%" android:layout_marginRight="10dp"/>
+                        <TextView android:id="@+id/tax" android:text="$0.00"/>
                     </TableRow>
                     <TableRow>
-                        <TextView android:text="Total"/>
-                        <TextView android:id="@+id/total"/>
+                        <TextView android:text="Total" android:layout_marginRight="10dp"/>
+                        <TextView android:id="@+id/total" android:text="$0.00"/>
                     </TableRow>
                     <TableRow>
-                        <TextView android:text="Tender"/>
-                        <TextView android:id="@+id/tender"/>
+                        <TextView android:text="Tender" android:layout_marginRight="10dp"/>
+                        <TextView android:id="@+id/tender" android:text="$0.00"/>
                     </TableRow>
                     <TableRow>
-                        <TextView android:text="Change"/>
-                        <TextView android:id="@+id/change"/>
+                        <TextView android:text="Change" android:layout_marginRight="10dp"/>
+                        <TextView android:id="@+id/change" android:text="$0.00"/>
                     </TableRow>
                 </TableLayout>
             </RelativeLayout>
