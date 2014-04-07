@@ -22,7 +22,7 @@
 
     <TextView android:id="@+id/PRICE_CELL"
               android:layout_width="0dp"
-              android:layout_weight="3"
+              android:layout_weight="2"
               android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
               android:layout_height="wrap_content"
               android:gravity="right"
@@ -30,7 +30,7 @@
 
     <TextView android:id="@+id/SUB_TOTAL_CELL"
               android:layout_width="0dp"
-              android:layout_weight="3"
+              android:layout_weight="2"
               android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
               android:layout_height="wrap_content"
               android:gravity="right"
