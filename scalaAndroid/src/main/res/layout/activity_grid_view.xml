@@ -29,7 +29,7 @@
                       android:orientation="vertical"
                       android:layout_width="0sp"
                       android:layout_height="match_parent"
-                      android:layout_weight="3">
+                      android:layout_weight="3" android:background="@color/wild_blue">
 
             <LinearLayout
                     android:orientation="horizontal"
@@ -97,9 +97,9 @@
                     >
             </ListView>
             <TextView android:id="@+id/accumulatorDisplay" android:layout_width="match_parent"
-                      android:layout_height="10pt" android:background="#FFFF00"/>
+                      android:layout_height="10pt" android:background="@color/white"/>
             <RelativeLayout android:layout_width="match_parent" android:layout_height="0pt" android:layout_weight="1"
-                            android:gravity="bottom" android:background="@color/white">
+                            android:gravity="bottom" android:background="@color/deep_pink">
                 <TableLayout android:id="@+id/numberPad" android:layout_width="wrap_content"
                              android:layout_height="match_parent" android:layout_alignParentLeft="true">
                     <TableRow>
