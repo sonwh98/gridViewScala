@@ -187,6 +187,7 @@ class GridViewActivity extends Activity {
   object ShoppingCart extends BaseAdapter {
     val lineItems = new mutable.ArrayBuffer[(Int, Item)]()
     val lineItemViews = mutable.MutableList.empty[View]
+    val lineItemListView = findViewById(R.id.lineItemListView).asInstanceOf[ListView]
     val TAG = "com.datayumyum.pos.ShoppingCart"
     val inflater: LayoutInflater = getLayoutInflater()
     var reset: Boolean = true
@@ -243,8 +244,10 @@ class GridViewActivity extends Activity {
       if (i > -1) {
         val updatedQuantity = currentQuantity + quantity
         lineItems(i) = (updatedQuantity, item)
-
-        animateView(lineItemViews(i))
+        val visible: Boolean = i >= lineItemListView.getFirstVisiblePosition && i <= lineItemListView.getLastVisiblePosition
+        if (visible) {
+          animateView(lineItemViews(i))
+        }
       } else {
         lineItems.append((quantity, item))
       }
