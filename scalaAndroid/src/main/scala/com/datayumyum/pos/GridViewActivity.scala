@@ -3,10 +3,9 @@ package com.datayumyum.pos
 import android.os.Bundle
 import android.app.Activity
 import scala.io.Source
-import android.view.{ViewGroup, View, LayoutInflater}
+import android.view.{MotionEvent, ViewGroup, View, LayoutInflater}
 import android.widget._
 import android.animation.{ArgbEvaluator, ValueAnimator}
-import android.view.animation.BounceInterpolator
 import scala.collection.mutable
 import android.util.Log
 import java.util.Locale
@@ -117,28 +116,39 @@ class GridViewActivity extends Activity {
       val inflater: LayoutInflater = getLayoutInflater()
       val itemButton: View = inflater.inflate(R.layout.item_button, null)
       val imageButton: ImageButton = itemButton.findViewById(R.id.item_image_button).asInstanceOf[ImageButton]
-      new DownloadImageTask(imageButton).execute(item.imageURL)
-      imageButton.setOnClickListener((v: View) => {
-        val bounceAnimator: ValueAnimator = ValueAnimator.ofInt(0, imageButton.getHeight)
-        bounceAnimator.setDuration(500)
-        bounceAnimator.setInterpolator(new BounceInterpolator)
-        bounceAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener {
-          override def onAnimationUpdate(animation: ValueAnimator) {
-            val value: Int = animation.getAnimatedValue.asInstanceOf[Int]
-            imageButton.getLayoutParams.height = value
-            imageButton.requestLayout
-          }
-        })
-        bounceAnimator.start
-        val quantity = Accumulator.pop().asInstanceOf[Int]
-        if (quantity == 0) {
-          ShoppingCart.add(item)
-        } else {
-          ShoppingCart.add(item, quantity)
-        }
-      })
-
       val itemLabel: TextView = itemButton.findViewById(R.id.item_label).asInstanceOf[TextView]
+
+      new DownloadImageTask(imageButton).execute(item.imageURL)
+      val itemClickCallBack = (v: View, event: MotionEvent) => {
+        val actionType = event.getAction
+        Log.i(TAG, actionType.toString)
+        actionType match {
+          case MotionEvent.ACTION_DOWN => {
+            itemButton.setAlpha(0.5f)
+            val quantity = Accumulator.pop().asInstanceOf[Int]
+            if (quantity == 0) {
+              ShoppingCart.add(item)
+            } else {
+              ShoppingCart.add(item, quantity)
+            }
+          }
+          case MotionEvent.ACTION_MOVE => {
+            def isInside(): Boolean = {
+              event.getX() > 0 && event.getX() < itemButton.getWidth() && event.getY() > 0 && event.getY() < itemButton.getHeight()
+            }
+            if (isInside()) {
+              itemButton.setAlpha(0.5f)
+            } else {
+              itemButton.setAlpha(1.0f)
+            }
+          }
+          case _ => itemButton.setAlpha(1.0f)
+        }
+        true
+      }
+      imageButton.setOnTouchListener(itemClickCallBack)
+      itemLabel.setOnTouchListener(itemClickCallBack)
+
       itemLabel.setText(item.name)
       itemButton
     })
@@ -163,11 +173,16 @@ class GridViewActivity extends Activity {
 
   implicit class OnClickListener(onClickCallBack: View => Any) extends View.OnClickListener {
 
-    def onClick(v: View) {
+    override def onClick(v: View) {
       onClickCallBack(v)
     }
   }
 
+  implicit class OnTouchListener(onTouchCallBack: (View, MotionEvent) => Boolean) extends View.OnTouchListener {
+    override def onTouch(view: View, event: MotionEvent): Boolean = {
+      onTouchCallBack(view, event)
+    }
+  }
 
   object ShoppingCart extends BaseAdapter {
     val lineItems = new mutable.ArrayBuffer[(Int, Item)]()
@@ -267,7 +282,6 @@ class GridViewActivity extends Activity {
         val colorAnimation: ValueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo).asInstanceOf[ValueAnimator]
         colorAnimation.addUpdateListener(new AnimatorUpdateListener() {
           override def onAnimationUpdate(animator: ValueAnimator) {
-            Log.i(TAG, "view=" + view + " animator=" + animator)
             view.setBackgroundColor(animator.getAnimatedValue().asInstanceOf[Int])
           }
 
