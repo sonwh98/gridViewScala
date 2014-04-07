@@ -12,6 +12,8 @@ import java.util.Locale
 import java.text.NumberFormat
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import com.android.debug.hv.ViewServer
+import java.io.IOException
+import android.widget
 
 class GridViewActivity extends Activity {
   val TAG = "com.datayumyum.pos.GridViewActivity"
@@ -232,11 +234,6 @@ class GridViewActivity extends Activity {
     }
 
     def add(item: Item, quantity: Int = 1) {
-      if (reset) {
-        clear()
-        reset = false
-      }
-
       val (currentQuantity, foundItem) = lineItems.find {
         case (quantity1, item1) => item == item1
       }.getOrElse((0, item))
@@ -300,7 +297,6 @@ class GridViewActivity extends Activity {
     }
 
     def checkout() {
-      reset = true
       val receiptPrinterData = lineItems.map {
         case (quantity, item) => {
           f"$quantity%s ${item.name} ${item.price * quantity}"
@@ -309,7 +305,22 @@ class GridViewActivity extends Activity {
       val cmd = Array.concat(receiptPrinterData.getBytes, Printer.CUT)
       new Thread() {
         override def run() {
-          Printer.sendCommand(cmd)
+          try {
+            Printer.sendCommand(cmd)
+          } catch {
+            case ex: Exception => runOnUiThread(new Runnable() {
+              override def run() {
+                widget.Toast.makeText(getApplicationContext(), "printer not available", 1000).show()
+              }
+            })
+          } finally {
+            runOnUiThread(new Runnable() {
+              override def run() {
+                clear()
+              }
+            })
+
+          }
         }
       }.start()
     }
