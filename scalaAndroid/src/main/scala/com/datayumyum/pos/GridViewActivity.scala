@@ -45,7 +45,7 @@ class GridViewActivity extends Activity {
       })
     }
     def configureLineItemView() {
-      val listView: ListView = findViewById(R.id.list).asInstanceOf[ListView]
+      val listView: ListView = findViewById(R.id.lineItemListView).asInstanceOf[ListView]
       listView.setAdapter(ShoppingCart)
 
       val touchListener = new SwipeDismissListViewTouchListener(listView, new SwipeDismissListViewTouchListener.DismissCallbacks() {

@@ -89,7 +89,7 @@
             </LinearLayout>
 
             <ListView
-                    android:id="@+id/list"
+                    android:id="@+id/lineItemListView"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:transcriptMode="alwaysScroll"
