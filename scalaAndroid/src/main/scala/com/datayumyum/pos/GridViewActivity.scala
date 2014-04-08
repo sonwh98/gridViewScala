@@ -186,6 +186,13 @@ class GridViewActivity extends Activity {
     }
   }
 
+  def thread[F](f: => F) = (new Thread(new Runnable() {
+    def run() {
+      f
+    }
+  })).start
+
+
   object ShoppingCart extends BaseAdapter {
     val lineItems = new mutable.ArrayBuffer[(Int, Item)]()
     val lineItemViews = mutable.MutableList.empty[View]
@@ -297,32 +304,23 @@ class GridViewActivity extends Activity {
     }
 
     def checkout() {
-      val receiptPrinterData = lineItems.map {
-        case (quantity, item) => {
-          f"$quantity%s ${item.name} ${item.price * quantity}"
+      val store = Store("QT Sandwich", Address("48 N 10th St", "Philadelphia", "PA", "19107"), "(267)639-4520")
+      thread {
+        try {
+          Printer.print(Receipt(store, lineItems.toList))
+          runOnUiThread(new Runnable() {
+            override def run() {
+              clear()
+            }
+          })
+        } catch {
+          case ex: Exception => runOnUiThread(new Runnable() {
+            override def run() {
+              widget.Toast.makeText(getApplicationContext(), "printer not available", 1000).show()
+            }
+          })
         }
-      }.mkString("\n")
-      val cmd = Array.concat(receiptPrinterData.getBytes, Printer.CUT)
-      new Thread() {
-        override def run() {
-          try {
-            Printer.sendCommand(cmd)
-          } catch {
-            case ex: Exception => runOnUiThread(new Runnable() {
-              override def run() {
-                widget.Toast.makeText(getApplicationContext(), "printer not available", 1000).show()
-              }
-            })
-          } finally {
-            runOnUiThread(new Runnable() {
-              override def run() {
-                clear()
-              }
-            })
-
-          }
-        }
-      }.start()
+      }
     }
 
     def clear() {
