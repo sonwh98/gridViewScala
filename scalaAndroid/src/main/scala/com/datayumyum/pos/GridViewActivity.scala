@@ -192,6 +192,11 @@ class GridViewActivity extends Activity {
     }
   })).start
 
+  def uiThread[F](f: => F) = runOnUiThread(new Runnable() {
+    def run() {
+      f
+    }
+  })
 
   object ShoppingCart extends BaseAdapter {
     val lineItems = new mutable.ArrayBuffer[(Int, Item)]()
@@ -308,17 +313,13 @@ class GridViewActivity extends Activity {
       thread {
         try {
           Printer.print(Receipt(store, lineItems.toList))
-          runOnUiThread(new Runnable() {
-            override def run() {
-              clear()
-            }
-          })
+          uiThread {
+            clear()
+          }
         } catch {
-          case ex: Exception => runOnUiThread(new Runnable() {
-            override def run() {
-              widget.Toast.makeText(getApplicationContext(), f"printer not available ${ex.getMessage}", 1000).show()
-            }
-          })
+          case ex: Exception => uiThread {
+            widget.Toast.makeText(getApplicationContext(), f"printer not available ${ex.getMessage}", Toast.LENGTH_LONG).show()
+          }
         }
       }
     }
