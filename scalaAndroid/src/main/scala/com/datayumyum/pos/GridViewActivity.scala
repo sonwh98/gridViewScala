@@ -304,7 +304,7 @@ class GridViewActivity extends Activity {
     }
 
     def checkout() {
-      val store = Store("QT Sandwich", Address("48 N 10th St", "Philadelphia", "PA", "19107"), "(267)639-4520")
+      val store = Store("QT Sandwich", Address("48 N 10th St", "Philadelphia", "PA", "19107"), "(267)639-4520", "http://www.qtshop.com")
       thread {
         try {
           Printer.print(Receipt(store, lineItems.toList))
@@ -316,7 +316,7 @@ class GridViewActivity extends Activity {
         } catch {
           case ex: Exception => runOnUiThread(new Runnable() {
             override def run() {
-              widget.Toast.makeText(getApplicationContext(), "printer not available", 1000).show()
+              widget.Toast.makeText(getApplicationContext(), f"printer not available ${ex.getMessage}", 1000).show()
             }
           })
         }
